@@ -24,6 +24,7 @@ pipeline {
         stage('Test') {
             agent {
                 docker {
+                    /* groovylint-disable-next-line DuplicateStringLiteral */
                     image 'node:18-alpine'
                     reuseNode true
                 }
@@ -34,6 +35,12 @@ pipeline {
                 npm test
                 '''
             }
+        }
+    }
+
+    post {
+        always {
+            junit 'test-results/junit.xml'
         }
     }
 }
