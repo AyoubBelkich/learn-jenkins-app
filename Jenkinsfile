@@ -1,8 +1,13 @@
+/* groovylint-disable NestedBlockDepth */
+/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
 
-    stages {
+    environment{
+        NETLIFY_SITE_ID = '5b7130cb-8e7d-4be9-81a0-99af61eb000f'
+    }
 
+    stages {
         stage('Build') {
             agent {
                 docker {
@@ -27,6 +32,7 @@ pipeline {
                 stage('Unit tests') {
                     agent {
                         docker {
+                            /* groovylint-disable-next-line DuplicateStringLiteral */
                             image 'node:18-alpine'
                             reuseNode true
                         }
@@ -64,6 +70,7 @@ pipeline {
 
                     post {
                         always {
+                            /* groovylint-disable-next-line LineLength */
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
@@ -82,6 +89,7 @@ pipeline {
                 sh '''
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
+                    echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                 '''
             }
         }
