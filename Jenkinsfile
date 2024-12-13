@@ -1,3 +1,4 @@
+/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
 
@@ -16,7 +17,7 @@ pipeline {
                     npm --version
                     npm ci
                     npm run build
-                    npm -la
+                    ls -la
                 '''
             }
         }
